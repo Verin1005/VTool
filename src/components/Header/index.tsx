@@ -3,8 +3,13 @@ import Image from "next/image";
 import { useActiveWeb3React } from "hooks/useActiveWeb3React";
 import { connectors } from "config/constants/connectors";
 import { shortStr } from "utils/fomatData";
+import { useTranslation } from "react-i18next";
+import Link from "next/link";
+import { useRouter } from "next/router";
 export default function Header() {
   const { account, chainId, active, activate, deactivate } = useActiveWeb3React();
+  const router = useRouter();
+  const { t } = useTranslation("header");
   useEffect(() => {
     activate(connectors["injected"]);
   }, []);
@@ -18,7 +23,7 @@ export default function Header() {
           </div>
           <div className="w-5/6 h-full flex items-center text-xl text-[#626261]">
             <div className="flex items-center hover:cursor-pointer">
-              工具和服务
+              <div>{t("tools")}</div>
               <Image src="/image/header/more.svg" alt="logo" width={24} height={24} className="rounded-full"></Image>
             </div>
           </div>
@@ -41,7 +46,11 @@ export default function Header() {
             </div>
           )}
 
-          <div className="w-1/6 h-full text-[#161B4A] text-xl font-bold flex items-center justify-center">中文</div>
+          <div className="w-1/6 h-full text-[#161B4A] text-xl font-bold flex items-center justify-center hover:cursor-pointer">
+            <Link href="/" locale={router.locale === "en" ? "ch" : "en"}>
+              <div>{t("lang")}</div>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

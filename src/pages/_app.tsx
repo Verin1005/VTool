@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 import { Web3Provider } from "@ethersproject/providers";
 import { Web3ReactProvider } from "@web3-react/core";
 import dynamic from "next/dynamic";
-
+import { appWithTranslation } from "next-i18next";
 import Header from "components/Header/index";
 
 export function getLibrary(provider: any): Web3Provider {
@@ -25,4 +25,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default MyApp;
+export default appWithTranslation(MyApp);

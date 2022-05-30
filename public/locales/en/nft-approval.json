@@ -1,0 +1,8 @@
+{
+  "title": "NFT Approval",
+  "nft-contract-address": "NFT Contract Address",
+  "authorization-contract-address": "Approvel Contract Address",
+  "operation": "Operation",
+  "btn-approvel": "Approvel",
+  "btn-cancelapprovel": "Cancel Approvel"
+}

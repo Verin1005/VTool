@@ -66,7 +66,7 @@ export default function Header() {
           )}
 
           <div className="w-1/6 h-full text-[#161B4A] text-xl font-bold flex items-center justify-center hover:cursor-pointer">
-            <Link href="/" locale={router.locale === "en" ? "ch" : "en"}>
+            <Link href={router.asPath} locale={router.locale === "en" ? "ch" : "en"}>
               <div>{t("lang")}</div>
             </Link>
           </div>
@@ -88,7 +88,8 @@ export default function Header() {
               <div
                 className="text-xs flex items-center hover:cursor-pointer text-gray-500 hover:text-gray-700 mt-2"
                 onClick={() => {
-                  // Router.push("/NFTApproval");
+                  Router.push("/NFTApproval");
+                  setAnchorEl(null);
                 }}
               >
                 <Image

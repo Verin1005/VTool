@@ -1,0 +1,8 @@
+{
+  "title": "NFT 授权",
+  "nft-contract-address": "NFT合约地址",
+  "authorization-contract-address": "授权合约地址",
+  "operation": "操作",
+  "btn-approvel": "授权",
+  "btn-cancelapprovel": "取消授权"
+}

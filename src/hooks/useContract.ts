@@ -5,7 +5,7 @@ import { AddressZero } from "@ethersproject/constants";
 import { isAddress } from "utils/isAddress";
 import { getProviderOrSigner } from "utils";
 import { Contract } from "@ethersproject/contracts";
-
+import ERC721Abi from "config/abi/erc721.json";
 // export const useExampleContract = (address: string, withSignerIfPossible = true) => {
 //   return useContract(address, ContractAbi, withSignerIfPossible);
 // };
@@ -17,6 +17,10 @@ import { Contract } from "@ethersproject/contracts";
 //   return useContract(getContractAddress(chainId), ContractAbi, withSignerIfPossible);
 // };
 
+export const useERC721Contract = (address: string, withSignerIfPossible = true) => {
+  return useContract(address, ERC721Abi, withSignerIfPossible);
+};
+
 export function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
   const { library, account } = useActiveWeb3React();
   return useMemo(() => {
@@ -24,7 +28,7 @@ export function useContract(address: string | undefined, ABI: any, withSignerIfP
     try {
       return getContract(address, ABI, library, withSignerIfPossible && account ? account : undefined);
     } catch (error) {
-      console.error("Failed to get contract", error);
+      // console.error("Failed to get contract", error);
       return null;
     }
   }, [address, ABI, library, withSignerIfPossible, account]);

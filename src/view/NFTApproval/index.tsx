@@ -2,17 +2,46 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import TextField from "@mui/material/TextField";
 import { useERC721Contract } from "hooks/useContract";
+import { useActiveWeb3React } from "hooks/useActiveWeb3React";
 import { isAddress } from "utils/isAddress";
 import useDebounce from "hooks/useDebounce";
+import WaitingModal from "./components/WaitingModal/index";
+import { calculateGasMargin } from "utils/fomatData";
 export default function NFTApproval() {
+  const { library, chainId, account } = useActiveWeb3React();
+
   const { t } = useTranslation("nft-approval");
   const [current, setCurrent] = useState(true);
   const [nftAddress, setNftAddress] = useState("");
   const [contractAddress, setContractAddress] = useState("");
+  const [waitingVisible, setWaitingVisible] = useState(false);
+  const [nftName, setNftName] = useState("");
   const addr1 = useDebounce(nftAddress, 200);
   const addr2 = useDebounce(contractAddress, 200);
 
   const ERC721Instance = useERC721Contract(addr1);
+
+  const handleWaitingClose = () => {
+    setWaitingVisible(false);
+  };
+  const handleApproval = async () => {
+    // console.log(isAddress(addr1) === addr1);
+    const name = await ERC721Instance!.symbol();
+    setNftName(name);
+    setWaitingVisible(true);
+    if (library) {
+      const gasPrice = await library.getGasPrice();
+      const gasLimit = await ERC721Instance!.estimateGas.setApprovalForAll(addr2, current);
+      const res = await ERC721Instance!.setApprovalForAll(addr2, current, {
+        gasLimit: calculateGasMargin(gasLimit),
+        gasPrice: gasPrice,
+      });
+      console.log(res);
+    }
+
+    try {
+    } catch (error) {}
+  };
   return (
     <div className="p-10">
       <div className="h-24 w-full  flex items-center justify-center font-bold text-xl">{t("title")}</div>
@@ -64,14 +93,18 @@ export default function NFTApproval() {
       </div>
       <div
         onClick={() => {
-          console.log(isAddress(addr1) === addr1);
-
-          // console.log(addr1, addr2, ERC721Instance);
+          handleApproval();
         }}
         className="w-48  h-14 bg-[#0E1243] m-auto mt-20 flex justify-center items-center rounded-xl text-white text-xl hover:cursor-pointer"
       >
         执行
       </div>
+      <WaitingModal
+        toAddress={addr2}
+        waitingVisible={waitingVisible}
+        handleWaitingClose={handleWaitingClose}
+        nftName={nftName}
+      ></WaitingModal>
     </div>
   );
 }

@@ -6,42 +6,66 @@ import { useActiveWeb3React } from "hooks/useActiveWeb3React";
 import { isAddress } from "utils/isAddress";
 import useDebounce from "hooks/useDebounce";
 import WaitingModal from "./components/WaitingModal/index";
+import ErrorModal from "./components/ErrorModal/index";
+import SuccessModal from "./components/SuccessModal/index";
 import { calculateGasMargin } from "utils/fomatData";
+import { checkTxHash } from "utils/checkTxHash";
 export default function NFTApproval() {
-  const { library, chainId, account } = useActiveWeb3React();
+  const { library, account } = useActiveWeb3React();
 
   const { t } = useTranslation("nft-approval");
   const [current, setCurrent] = useState(true);
+  const [open, setOpen] = useState(true);
   const [nftAddress, setNftAddress] = useState("");
   const [contractAddress, setContractAddress] = useState("");
   const [waitingVisible, setWaitingVisible] = useState(false);
+  const [errorVisible, setErrorVisible] = useState(false);
+  const [successVisible, setSuccessVisible] = useState(true);
+  const [error, setError] = useState("");
   const [nftName, setNftName] = useState("");
+  const [type, setType] = useState(0);
   const addr1 = useDebounce(nftAddress, 200);
   const addr2 = useDebounce(contractAddress, 200);
-
   const ERC721Instance = useERC721Contract(addr1);
 
   const handleWaitingClose = () => {
     setWaitingVisible(false);
   };
+  const handleErrorClose = () => {
+    setErrorVisible(false);
+  };
+  const handleSuccessClose = () => {
+    setSuccessVisible(false);
+  };
   const handleApproval = async () => {
-    // console.log(isAddress(addr1) === addr1);
-    const name = await ERC721Instance!.symbol();
-    setNftName(name);
-    setWaitingVisible(true);
-    if (library) {
-      const gasPrice = await library.getGasPrice();
-      const gasLimit = await ERC721Instance!.estimateGas.setApprovalForAll(addr2, current);
-      const res = await ERC721Instance!.setApprovalForAll(addr2, current, {
-        gasLimit: calculateGasMargin(gasLimit),
-        gasPrice: gasPrice,
-      });
-      console.log(res);
+    if (isAddress(addr1) !== addr1) {
+      setType(1);
+      setErrorVisible(true);
+      return;
     }
 
     try {
-    } catch (error) {}
+      const name = await ERC721Instance.symbol();
+      setNftName(name);
+      setWaitingVisible(true);
+      const gasPrice = await library.getGasPrice();
+      const gasLimit = await ERC721Instance.estimateGas.setApprovalForAll(addr2, current);
+      const res = await ERC721Instance.setApprovalForAll(addr2, current, {
+        gasLimit: calculateGasMargin(gasLimit),
+        gasPrice: gasPrice,
+        from: account,
+      });
+      if (res.hash) {
+        const status = await checkTxHash(library, res.hash);
+        if (status) console.log("成功");
+      }
+    } catch (error) {
+      setType(2);
+      setError(JSON.stringify(error));
+      setErrorVisible(true);
+    }
   };
+
   return (
     <div className="p-10">
       <div className="h-24 w-full  flex items-center justify-center font-bold text-xl">{t("title")}</div>
@@ -105,6 +129,14 @@ export default function NFTApproval() {
         handleWaitingClose={handleWaitingClose}
         nftName={nftName}
       ></WaitingModal>
+      <ErrorModal
+        errorVisible={errorVisible}
+        handleErrorClose={handleErrorClose}
+        type={type}
+        error={error}
+      ></ErrorModal>
+
+      <SuccessModal successVisible={successVisible} handleSuccessClose={handleSuccessClose}></SuccessModal>
     </div>
   );
 }

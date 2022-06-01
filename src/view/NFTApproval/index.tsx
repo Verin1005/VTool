@@ -20,7 +20,7 @@ export default function NFTApproval() {
   const [contractAddress, setContractAddress] = useState("");
   const [waitingVisible, setWaitingVisible] = useState(false);
   const [errorVisible, setErrorVisible] = useState(false);
-  const [successVisible, setSuccessVisible] = useState(true);
+  const [successVisible, setSuccessVisible] = useState(false);
   const [error, setError] = useState("");
   const [nftName, setNftName] = useState("");
   const [type, setType] = useState(0);
@@ -57,7 +57,7 @@ export default function NFTApproval() {
       });
       if (res.hash) {
         const status = await checkTxHash(library, res.hash);
-        if (status) console.log("成功");
+        if (status) setSuccessVisible(true);
       }
     } catch (error) {
       setType(2);

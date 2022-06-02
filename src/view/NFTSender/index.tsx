@@ -1,12 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 
 import { useTranslation } from "react-i18next";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Autocomplete from "@mui/material/Autocomplete";
+import { isAddress } from "utils/isAddress";
+import { useERC721Contract } from "hooks/useContract";
+import { useActiveWeb3React } from "hooks/useActiveWeb3React";
+
 export default function NFTSender() {
   const { t } = useTranslation("nft-sender");
+  const { account, chainId, active, activate, deactivate } = useActiveWeb3React();
+  const [tokenList, setTokenList] = useState([]);
+
   const [current, setCurrent] = useState(1);
+  const [searchValue, setSearchValue] = useState("");
+  const address = useMemo(() => {
+    return isAddress(searchValue) ? searchValue : "";
+  }, [searchValue]);
+
+  const ERC721Instance = useERC721Contract(address);
+  useEffect(() => {
+    console.log(address);
+
+    const getErc721Info = async () => {
+      try {
+        // setSelectLoading(true);
+
+        const index = tokenList.findIndex((item) => item.address === isAddress(searchValue));
+        if (index !== -1) {
+          return;
+        }
+        const symbol = await ERC721Instance.symbol();
+        console.log(11122233, ERC721Instance);
+
+        const name = await ERC721Instance.name();
+        const token = { symbol, name, address, chainId };
+        console.log(token);
+
+        setTokenList([...tokenList, token]);
+        console.log(22222222, tokenList);
+
+        // setSelectLoading(false);
+      } catch (error) {
+        console.log(error);
+        // setSelectLoading(false);
+      }
+    };
+    getErc721Info();
+  }, [ERC721Instance, address, chainId, searchValue, tokenList]);
   return (
     <div className="p-10">
       <div className="text-2xl font-bold text-[#001A6B]">{t("title")}</div>
@@ -22,7 +64,11 @@ export default function NFTSender() {
               freeSolo
               id="free-solo-2-demo"
               disableClearable
-              options={top100Films.map((option) => option.title)}
+              options={tokenList.map((option) => option.symbol)}
+              onInputChange={(event, newInputValue) => {
+                setSearchValue(newInputValue);
+                console.log(searchValue);
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -65,4 +111,3 @@ export default function NFTSender() {
     </div>
   );
 }
-const top100Films = [];

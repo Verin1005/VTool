@@ -7,7 +7,7 @@ export function checkTxHash(library, hash) {
         .getTransactionReceipt(hash)
         .then((receipt: any) => {
           if (receipt) {
-            console.log("交易成功");
+            console.log("success");
             clearInterval(timer);
 
             resolve(true);
@@ -17,7 +17,7 @@ export function checkTxHash(library, hash) {
           if (err) clearInterval(timer);
         });
       if (timeTake > 20) {
-        console.log("轮训hash超时");
+        console.log("timeout");
         clearInterval(timer);
         resolve(false);
       }

@@ -1,6 +1,7 @@
 {
-  "lang": "En",
+  "lang": "中文",
   "tools": "Tools",
   "advanced": "Advanced",
-  "nft-approval": "NFT Approval"
+  "nft-approval": "NFT Approval",
+  "nft-sender": "NFT MultiSender"
 }

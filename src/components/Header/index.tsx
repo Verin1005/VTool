@@ -18,6 +18,8 @@ export default function Header() {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
@@ -25,10 +27,20 @@ export default function Header() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
-
+  const RouterList = [
+    {
+      name: "NFTApproval",
+      router: "/NFTApproval",
+      img: "/image/header/nft-approval.svg",
+      lang: "nft-approval",
+    },
+    {
+      name: "NFTSender",
+      router: "/NFTSender",
+      img: "/image/header/nft-sender.svg",
+      lang: "nft-sender",
+    },
+  ];
   useEffect(() => {
     activate(connectors["injected"]);
   }, []);
@@ -85,22 +97,22 @@ export default function Header() {
           <Typography sx={{ p: 2 }} className="w-[1000px] h-[500px] flex">
             <div className="w-1/5">
               <div className="w-full font-bold text-xl">NFT</div>
-              <div
-                className="text-xs flex items-center hover:cursor-pointer text-gray-500 hover:text-gray-700 mt-2"
-                onClick={() => {
-                  Router.push("/NFTApproval");
-                  setAnchorEl(null);
-                }}
-              >
-                <Image
-                  src="/image/header/nft-approval.svg"
-                  alt="nft-approval"
-                  width={16}
-                  height={16}
-                  className="rounded-full"
-                ></Image>
-                <div className="ml-2">{t("nft-approval")}</div>
-              </div>
+
+              {RouterList.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="text-xl flex items-center hover:cursor-pointer text-gray-500 hover:text-gray-700 mt-5"
+                    onClick={() => {
+                      Router.push(item.router);
+                      setAnchorEl(null);
+                    }}
+                  >
+                    <Image src={item.img} alt="nft-approval" width={20} height={20} className="rounded-full"></Image>
+                    <div className="ml-2">{t(item.lang)}</div>
+                  </div>
+                );
+              })}
             </div>
             <div className="w-1/5">
               <div className="w-full font-bold text-xl">Token</div>

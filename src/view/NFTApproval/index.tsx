@@ -53,7 +53,6 @@ export default function NFTApproval() {
       const res = await ERC721Instance.setApprovalForAll(addr2, current, {
         gasLimit: calculateGasMargin(gasLimit),
         gasPrice: gasPrice,
-        from: account,
       });
       if (res.hash) {
         const status = await checkTxHash(library, res.hash);

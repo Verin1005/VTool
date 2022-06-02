@@ -1,6 +1,7 @@
 {
-  "lang": "中文",
+  "lang": "En",
   "tools": "工具与服务",
   "advanced": "科学家工具",
-  "nft-approval": "NFT 授权"
+  "nft-approval": "NFT 授权",
+  "nft-sender": "NFT 批量发送"
 }

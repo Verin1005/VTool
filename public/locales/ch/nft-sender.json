@@ -1,0 +1,7 @@
+{
+  "title": "批量发送NFT",
+  "nft-contract-address": "NFT合约地址",
+  "protocol": "协议",
+  "symbol": "标识",
+  "label1": "如需发送NFT，请填入NFT合约地址"
+}

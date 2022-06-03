@@ -2,53 +2,46 @@ import React, { useState, useMemo, useEffect } from "react";
 
 import { useTranslation } from "react-i18next";
 import TextField from "@mui/material/TextField";
-import Stack from "@mui/material/Stack";
 import Autocomplete from "@mui/material/Autocomplete";
 import { isAddress } from "utils/isAddress";
 import { useERC721Contract } from "hooks/useContract";
 import { useActiveWeb3React } from "hooks/useActiveWeb3React";
-
+import CircularProgress from "@mui/material/CircularProgress";
 export default function NFTSender() {
   const { t } = useTranslation("nft-sender");
   const { account, chainId, active, activate, deactivate } = useActiveWeb3React();
-  const [tokenList, setTokenList] = useState([]);
-
+  const [tokenList, setTokenList] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
   const [current, setCurrent] = useState(1);
   const [searchValue, setSearchValue] = useState("");
+  const [selectValue, setSelectValue] = useState<any>();
   const address = useMemo(() => {
     return isAddress(searchValue) ? searchValue : "";
   }, [searchValue]);
 
   const ERC721Instance = useERC721Contract(address);
   useEffect(() => {
-    console.log(address);
-
     const getErc721Info = async () => {
       try {
-        // setSelectLoading(true);
-
         const index = tokenList.findIndex((item) => item.address === isAddress(searchValue));
         if (index !== -1) {
           return;
         }
+        setLoading(true);
         const symbol = await ERC721Instance.symbol();
-        console.log(11122233, ERC721Instance);
-
         const name = await ERC721Instance.name();
         const token = { symbol, name, address, chainId };
-        console.log(token);
+        setSelectValue(token);
 
         setTokenList([...tokenList, token]);
-        console.log(22222222, tokenList);
-
-        // setSelectLoading(false);
+        setLoading(false);
       } catch (error) {
-        console.log(error);
-        // setSelectLoading(false);
+        setLoading(false);
       }
     };
     getErc721Info();
   }, [ERC721Instance, address, chainId, searchValue, tokenList]);
+
   return (
     <div className="p-10">
       <div className="text-2xl font-bold text-[#001A6B]">{t("title")}</div>
@@ -59,28 +52,35 @@ export default function NFTSender() {
       </div>
       <div className="flex justify-between mt-5">
         <div className="w-3/5 h-[60px] font-bold text-xl text-[#001A6B]">
-          <Stack spacing={2} sx={{ width: "100%" }}>
-            <Autocomplete
-              freeSolo
-              id="free-solo-2-demo"
-              disableClearable
-              options={tokenList.map((option) => option.symbol)}
-              onInputChange={(event, newInputValue) => {
-                setSearchValue(newInputValue);
-                console.log(searchValue);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label={t("label1")}
-                  InputProps={{
-                    ...params.InputProps,
-                    type: "search",
-                  }}
-                />
-              )}
-            />
-          </Stack>
+          <Autocomplete
+            id="asynchronous-demo"
+            disableClearable
+            options={tokenList}
+            getOptionLabel={(option) => option.symbol + "  " + option.address}
+            onInputChange={(event, newInputValue) => {
+              setSearchValue(newInputValue);
+            }}
+            onChange={(event, newValue) => {
+              setSelectValue(newValue);
+            }}
+            renderOption={(props, option) => (
+              <li key={option.address} {...props}>
+                {option.symbol} {option.address}
+              </li>
+            )}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <React.Fragment>{loading ? <CircularProgress color="inherit" size={20} /> : null}</React.Fragment>
+                  ),
+                }}
+                label="Movie"
+              />
+            )}
+          />
         </div>
         <div className="w-1/6 h-[60px] font-bold text-xl text-[#001A6B] flex item-center">
           <div
@@ -105,7 +105,7 @@ export default function NFTSender() {
           </div>
         </div>
         <div className="w-1/6 h-[60px] font-bold text-xl text-[#001A6B]">
-          <div className="bg-gray-200 w-3/5 h-16 flex items-center  pl-5">123</div>
+          <div className="bg-gray-200 w-3/5 h-16 flex items-center  pl-5">{selectValue ? selectValue.symbol : ""}</div>
         </div>
       </div>
     </div>

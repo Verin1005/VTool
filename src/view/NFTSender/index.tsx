@@ -7,6 +7,7 @@ import { isAddress } from "utils/isAddress";
 import { useERC721Contract } from "hooks/useContract";
 import { useActiveWeb3React } from "hooks/useActiveWeb3React";
 import CircularProgress from "@mui/material/CircularProgress";
+import InputContainer from "./InputContainer";
 export default function NFTSender() {
   const { t } = useTranslation("nft-sender");
   const { account, chainId, active, activate, deactivate } = useActiveWeb3React();
@@ -77,7 +78,7 @@ export default function NFTSender() {
                     <React.Fragment>{loading ? <CircularProgress color="inherit" size={20} /> : null}</React.Fragment>
                   ),
                 }}
-                label="Movie"
+                label={t("label1")}
               />
             )}
           />
@@ -108,6 +109,7 @@ export default function NFTSender() {
           <div className="bg-gray-200 w-3/5 h-16 flex items-center  pl-5">{selectValue ? selectValue.symbol : ""}</div>
         </div>
       </div>
+      <InputContainer></InputContainer>
     </div>
   );
 }

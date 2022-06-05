@@ -16,6 +16,8 @@ export default function NFTSender() {
   const [current, setCurrent] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const [selectValue, setSelectValue] = useState<any>();
+  const [inputValue, setInputValue] = useState("");
+  const [inputList, setInputList] = useState([""]);
   const address = useMemo(() => {
     return isAddress(searchValue) ? searchValue : "";
   }, [searchValue]);
@@ -42,6 +44,15 @@ export default function NFTSender() {
     };
     getErc721Info();
   }, [ERC721Instance, address, chainId, searchValue, tokenList]);
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+    if (e.target.value === "") {
+      setInputList([]);
+      return;
+    }
+    setInputList(e.target.value.split("\n"));
+  };
 
   return (
     <div className="p-10">
@@ -109,7 +120,11 @@ export default function NFTSender() {
           <div className="bg-gray-200 w-3/5 h-16 flex items-center  pl-5">{selectValue ? selectValue.symbol : ""}</div>
         </div>
       </div>
-      <InputContainer></InputContainer>
+      <InputContainer
+        inputValue={inputValue}
+        handleInputChange={handleInputChange}
+        inputList={inputList}
+      ></InputContainer>
     </div>
   );
 }

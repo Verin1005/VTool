@@ -59,7 +59,7 @@ export default function Header() {
             </div>
           </div>
         </div>
-        <div className="w-1/3 h-full flex items-center">
+        <div className="w-1/3 h-full flex items-center justify-end">
           {account && (
             <div className="w-1/3 h-1/2 rounded-full flex items-center justify-center font-bold text-lg bg-[#EEF0F3]">
               {account ? shortStr(account) : ""}

@@ -4,5 +4,6 @@
   "protocol": "协议",
   "symbol": "标识",
   "label1": "如需发送NFT，请填入NFT合约地址",
-  "label2": "接收地址"
+  "label2": "接收地址",
+  "placeholder1": "请输入地址"
 }

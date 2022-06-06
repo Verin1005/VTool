@@ -54,6 +54,11 @@ export default function NFTSender() {
     setInputList(e.target.value.split("\n"));
   };
 
+  const onExampleClick = () => {
+    setInputValue("0x731c3A53D26487Ea8c9768863CC98BEeaC666666,1\n0x141f2a14a0F8bc8f0E81aCb4b50874f70E8b1234,2");
+    setInputList(["0x731c3A53D26487Ea8c9768863CC98BEeaC666666,1", "0x141f2a14a0F8bc8f0E81aCb4b50874f70E8b1234,2"]);
+  };
+
   return (
     <div className="p-10">
       <div className="text-2xl font-bold text-[#001A6B]">{t("title")}</div>
@@ -117,13 +122,14 @@ export default function NFTSender() {
           </div>
         </div>
         <div className="w-1/6 h-[60px] font-bold text-xl text-[#001A6B]">
-          <div className="bg-gray-200 w-3/5 h-16 flex items-center  pl-5">{selectValue ? selectValue.symbol : ""}</div>
+          <div className="bg-gray-200  h-16 flex items-center  pl-5">{selectValue ? selectValue.symbol : ""}</div>
         </div>
       </div>
       <InputContainer
         inputValue={inputValue}
         handleInputChange={handleInputChange}
         inputList={inputList}
+        onExampleClick={onExampleClick}
       ></InputContainer>
     </div>
   );

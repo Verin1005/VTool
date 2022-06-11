@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
 import { useActiveWeb3React } from "hooks/useActiveWeb3React";
-import { connectors } from "config/constants/connectors";
 import { shortStr } from "utils/fomatData";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
@@ -9,6 +8,9 @@ import { useRouter } from "next/router";
 import Router from "next/router";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
+import { injected } from "config/constants/wallets";
+import useEagerConnect from "hooks/useEagerConnect";
+
 export default function Header() {
   const { account, chainId, active, activate, deactivate } = useActiveWeb3React();
 
@@ -41,9 +43,7 @@ export default function Header() {
       lang: "nft-sender",
     },
   ];
-  useEffect(() => {
-    activate(connectors["injected"]);
-  }, []);
+
   return (
     <div className="h-[70px] w-full shadow-md">
       <div className="w-9/12 h-full m-auto flex ">
@@ -68,7 +68,9 @@ export default function Header() {
           {!account && (
             <div
               onClick={() => {
-                activate(connectors["injected"]);
+                activate(injected, undefined, true).catch((error) => {
+                  console.log(error);
+                });
               }}
               className="
               w-1/3 h-1/2 bg-[#EEF0F3] rounded-full flex items-center justify-center text-xl font-bold hover:cursor-pointer hover:bg-[#EEF5F1]"

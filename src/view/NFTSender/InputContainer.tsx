@@ -19,8 +19,6 @@ export default function InputContainer(props: inputinterface) {
       try {
         const address = item.split(",")[0];
         const amount = item.split(",")[1];
-        console.log(address);
-        console.log(amount);
 
         if (item == "") {
           return;

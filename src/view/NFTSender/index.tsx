@@ -8,6 +8,7 @@ import { useERC721Contract } from "hooks/useContract";
 import { useActiveWeb3React } from "hooks/useActiveWeb3React";
 import CircularProgress from "@mui/material/CircularProgress";
 import InputContainer from "./InputContainer";
+import useDebounce from "hooks/useDebounce";
 export default function NFTSender() {
   const { t } = useTranslation("nft-sender");
   const { account, chainId, active, activate, deactivate } = useActiveWeb3React();
@@ -17,6 +18,7 @@ export default function NFTSender() {
   const [searchValue, setSearchValue] = useState("");
   const [selectValue, setSelectValue] = useState<any>();
   const [inputValue, setInputValue] = useState("");
+  const inputValueTarget = useDebounce(inputValue, 2);
   const [inputList, setInputList] = useState([""]);
   const address = useMemo(() => {
     return isAddress(searchValue) ? searchValue : "";
@@ -126,7 +128,7 @@ export default function NFTSender() {
         </div>
       </div>
       <InputContainer
-        inputValue={inputValue}
+        inputValue={inputValueTarget}
         handleInputChange={handleInputChange}
         inputList={inputList}
         onExampleClick={onExampleClick}

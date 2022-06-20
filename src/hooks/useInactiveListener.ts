@@ -2,7 +2,7 @@ import { useWeb3React as useWeb3ReactCore } from "@web3-react/core";
 import { useEffect } from "react";
 
 import { injected } from "config/constants/wallets";
-
+import { useRouter } from "next/router";
 /**
  * Use for network and injected - logs user in
  * and out after checking what network theyre on

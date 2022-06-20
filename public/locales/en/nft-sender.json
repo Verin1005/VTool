@@ -1,9 +1,11 @@
 {
-  "title": "Bath Send NFT",
+  "title": "Batch Send NFT",
   "nft-contract-address": "NFT Contract Address",
   "protocol": "Protocol",
   "symbol": "Symbol",
   "label1": "To send NFT, please fill in the NFT contract address",
   "label2": "Receiving Address",
-  "placeholder1": "Please enter the address"
+  "placeholder1": "Please enter the address",
+  "MaximumNumber": "Maximum number of addresses per time",
+  "tooltip": "Too many sending addresses will cause the problem of too large gas limit"
 }

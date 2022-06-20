@@ -9,8 +9,11 @@ import { useActiveWeb3React } from "hooks/useActiveWeb3React";
 import CircularProgress from "@mui/material/CircularProgress";
 import InputContainer from "./InputContainer";
 import useDebounce from "hooks/useDebounce";
+import Tooltip from "@mui/material/Tooltip";
+import Image from "next/image";
 export default function NFTSender() {
-  const { t } = useTranslation("nft-sender");
+  const { t } = useTranslation(["nft-sender", "common"]);
+
   const { account, chainId, active, activate, deactivate } = useActiveWeb3React();
   const [tokenList, setTokenList] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -133,6 +136,21 @@ export default function NFTSender() {
         inputList={inputList}
         onExampleClick={onExampleClick}
       ></InputContainer>
+      <div className="flex items-center">
+        <div className="text-[#0e2975] text-[16px] font-bold">{t("MaximumNumber")}</div>
+        <Tooltip placement="top-start" title={`${t("tooltip")}`}>
+          <div className="flex items-center">
+            <Image src="/image/nft-sender/tooltip.svg" alt="Tooltip" width={15} height={15} />
+          </div>
+        </Tooltip>
+        <p>：</p>
+        <div>
+          <TextField id="outlined-basic" defaultValue={200} className="w-[70px]" size="small" />
+        </div>
+      </div>
+      <div className="w-[150px] h-[40px] bg-[#0050ce] flex items-center justify-center text-white font-bold text-[14px] rounded-xl mt-[10px] hover:cursor-pointer">
+        {t("nextStep", { ns: "common" })}
+      </div>
     </div>
   );
 }

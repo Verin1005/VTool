@@ -76,11 +76,10 @@ export default function InputContainer(props: inputinterface) {
           }}
         ></TextField>
       </div>
-      <div
-        className="text-right underline decoration-1 text-xl mt-2 text-gray-400 hover:cursor-pointer"
-        onClick={onExampleClick}
-      >
-        查看例子
+      <div className="flex justify-end underline decoration-1 text-xl mt-2 text-gray-400 ">
+        <div onClick={onExampleClick} className=" w-20 hover:cursor-pointer">
+          查看例子
+        </div>
       </div>
       <div>{errAddressList}</div>
     </div>

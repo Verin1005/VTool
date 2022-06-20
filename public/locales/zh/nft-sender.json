@@ -5,5 +5,7 @@
   "symbol": "标识",
   "label1": "如需发送NFT，请填入NFT合约地址",
   "label2": "接收地址",
-  "placeholder1": "请输入地址"
+  "placeholder1": "请输入地址",
+  "MaximumNumber": "每次地址数量上限",
+  "tooltip": "发送地址数量过多会出现Gas Limit过大的问题"
 }

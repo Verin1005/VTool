@@ -12,6 +12,6 @@ export default function NFTSender() {
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["header", "nft-sender"])),
+    ...(await serverSideTranslations(locale, ["header", "nft-sender", "common"])),
   },
 });

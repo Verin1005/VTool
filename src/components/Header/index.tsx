@@ -10,13 +10,12 @@ import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 import { injected } from "config/constants/wallets";
 import useEagerConnect from "hooks/useEagerConnect";
-
 export default function Header() {
   const { account, chainId, active, activate, deactivate } = useActiveWeb3React();
 
   const router = useRouter();
 
-  const { t } = useTranslation("header");
+  const { t, i18n } = useTranslation("header");
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -80,9 +79,12 @@ export default function Header() {
           )}
 
           <div className="w-1/6 h-full text-[#161B4A] text-xl font-bold flex items-center justify-center hover:cursor-pointer">
-            <Link href={router.asPath} locale={router.locale === "en" ? "ch" : "en"}>
+            <Link href={router.asPath} locale={router.locale === "en" ? "zh" : "en"}>
               <div>{t("lang")}</div>
             </Link>
+            {/* <div onClick={() => i18n.changeLanguage(i18n.language == "en" ? "zh" : "en")}>
+              <div>{t("lang")}</div>
+            </div> */}
           </div>
         </div>
         <Popover
